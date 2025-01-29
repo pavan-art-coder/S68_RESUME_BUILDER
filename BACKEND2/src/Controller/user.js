@@ -11,15 +11,15 @@ const secret = process.env.private_key;
 const userrouter = Router();
 
 
-userrouter.post("/create-user",upload.single("file"), async(req,res)=>{
+userrouter.post("/create-user",async(req,res)=>{
     const {name, email, password} = req.body;
     const userEmail = await userModel.findOne({email});
     if (userEmail) {
         return next(new ErrorHandler("User already exists", 400));
       }
 
-      // const filename = req.file.filename ; 
-      // const fileUrl = path.join(filename);
+      const filename = req.file.filename ; 
+      const fileUrl = path.join(filename);
 
       bcrypt.hash(password, 10, async function(err, hash) {
       
@@ -27,7 +27,7 @@ userrouter.post("/create-user",upload.single("file"), async(req,res)=>{
         name:name,
         email:email,
         password: hash,
-        // avatar:fileUrl
+        avatar:fileUrl
       })
     })
 
@@ -47,7 +47,7 @@ userrouter.post("/login", async(req,res)=>{
         return res.status(400).json({message:"Invalid bcrypt compare"});
       }
       if(result){
-        jwt.sign({email:email},xyz,(err,token)=>{
+        jwt.sign({email:email},secret,(err,token)=>{
           if(err){
             return res.status(400).json({message:"Invalid jwt"});
           }
