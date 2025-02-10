@@ -7,6 +7,7 @@ import { Login } from './Component/Login'
 import { Signup } from './Component/Signup'
 import { Home } from './page/Home'
 import Productform from './Component/productform'
+import { Productcard } from './Component/Productcard'
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/productform" element={<Productform />} />
+        <Route path="/productcard" element={<Productcard/>}/>
       </Routes>
     </>
   )
