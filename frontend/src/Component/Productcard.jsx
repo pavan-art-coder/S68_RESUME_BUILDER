@@ -1,6 +1,20 @@
 import React from 'react';
+import { useState,useEffect } from 'react';
 
 export const Productcard = ({ name, image, price, description }) => {
+  const {currentindex,setCurrentindex} = useState(0);
+
+  useEffect(() => {
+    const interval= setInterval(() => {
+      setCurrentindex((prev)=>(prev+1)%image.length);
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+    }
+  },[image])
+
+
   return (
     <div className="bg-white p-6 rounded-xl shadow-lg flex flex-col md:flex-row gap-6 transition-all hover:shadow-2xl">
       {/* Left Side - Image & Info */}
