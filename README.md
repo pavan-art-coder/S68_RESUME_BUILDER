@@ -1,6 +1,6 @@
 # E-Commerce Application: Backend Web Development Project
 
-### **Milestone 1: Project Overview**
+<!-- ### **Milestone 1: Project Overview**
 
 **Brief Overview:**
 This project involves developing a fully functional e-commerce platform utilizing the MERN stack — MongoDB, Express, React, and Node.js. The application will be built using React's Create React App (CRA) for the front-end, MongoDB as the database solution, and Node.js with Express to handle the back-end server operations.
@@ -49,12 +49,12 @@ At this stage, we’ve laid the foundation for the backend by setting up the dir
   - **`routers/`**: Defines route handlers for different API endpoints.
   - **`utils/`**: Stores utility functions, including the `ErrorHandler.js` to manage application-level errors.
 
-In the **`index.js`** file, we imported Express, initialized the app, and set up basic routing and server listening. We can now handle HTTP requests through `app.get` and set the server to listen for incoming requests on the specified port.
+In the **`index.js`** file, we imported Express, initialized the app, and set up basic routing and server listening. We can now handle HTTP requests through `app.get` and set the server to listen for incoming requests on the specified port. -->
 
 ### **Milestone 4: Backend Structure and Initial Setup**
 creating user model, user controller and Multer support
 
-### **Milestone 6
+<!-- ### **Milestone 6
 : Backend Structure and Initial Setup**
 Password Encryption and User Data Storage
 
@@ -65,9 +65,9 @@ Ensure that the hashed password is stored in the database instead of the plainte
 User Data Storage:
 
 Save all relevant user information (e.g., name, email, etc.) in the database.
-Maintain the integrity and confidentiality of the password by ensuring it remains encrypted throughout the process.
+Maintain the integrity and confidentiality of the password by ensuring it remains encrypted throughout the process. -->
 
-### **Milestone 7
+<!-- ### **Milestone 7
 Create Login Endpoint:
 
 Accept user credentials (email/username and password).
@@ -78,4 +78,4 @@ Use bcrypt to hash the entered password.
 Compare it with the stored hashed password for authentication.
 
 ## **Milstone 8
-In this milestone we created two components called Home.jsx and productcard.jsx. product card.jsx is the template used in home.jsx to map out all the products and display them. We also added routes to the home.jsx to display it when the page loads. Based on the number of products the products are mapped and displayed.
+In this milestone we created two components called Home.jsx and productcard.jsx. product card.jsx is the template used in home.jsx to map out all the products and display them. We also added routes to the home.jsx to display it when the page loads. Based on the number of products the products are mapped and displayed. -->
