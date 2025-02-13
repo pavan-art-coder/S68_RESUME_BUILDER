@@ -147,3 +147,43 @@ By the end of this milestone, you will:
    - Pass the fetched data to the product card component to display it dynamically.
 
 This milestone is crucial in connecting the backend and frontend, making your application fully functional. Keep going! 🚀
+
+## Milestone 12
+
+### Achievements:
+- **Checkout Process:** Implemented a complete checkout page with form validation and integrated payment gateway (Stripe/PayPal).
+- **User Authentication:** Enhanced login/registration with "remember me" functionality.
+- **Order Confirmation:** Created a page to display order details after successful payment.
+- **Bug Fixes & UI Improvements:** Fixed bugs and improved the user interface.
+
+## Milestone 13
+
+In this milestone, the following changes were made:
+
+- List the major features or fixes you implemented here
+- Any new functionality added, e.g., new pages, forms, or components
+- Changes in existing functionality, if any]
+- Bug fixes, enhancements, or performance improvements
+
+## Milestone 14
+
+### Achievements:
+- **Implemented Order History Page:**
+  - Created a page where users can view their past orders and order details.
+  - Displayed order status, date, and total price.
+  
+- **Admin Dashboard:**
+  - Developed an admin panel for managing products, orders, and customers.
+  - Enabled the ability to update or delete products, and view order history for each customer.
+
+- **Performance Optimization:**
+  - Improved the site's loading speed by optimizing images and lazy-loading assets.
+
+- **Bug Fixes & UI Improvements:**
+  - Fixed minor UI bugs and improved responsiveness across devices.
+
+### Technologies Used:
+- HTML, CSS, JavaScript
+- React (if used)
+- Node.js (if used for backend)
+ 
