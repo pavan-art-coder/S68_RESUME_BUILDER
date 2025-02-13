@@ -1,10 +1,7 @@
-# S68_RESUME_BUILDER
-AI-Powered Resume Builder Project Title: Resumely
+### *Milestone 2: Frontend Development (Login Page)*
 
-Project Overview: Resumely is a web-based platform that uses AI to help users create professional resumes tailored to specific job roles. It offers recommendations, templates, and real-time feedback to improve the content and formatting of resumes.
+For this milestone, we successfully created the *Login Page* using React's Create React App (CRA). To improve the user interface and design, we will be updating the layout with *Tailwind CSS* for styling and incorporate *React-Icons* for intuitive icons. Tailwind CSS will help us streamline the design process with its utility-first classes, making the UI responsive and visually appealing.
 
-Key Features:
+The Login Page will include fields for the user's email and password, and will handle form validation, state management, and error handling for incorrect login attempts. React Icons will be utilized for visual appeal and ease of use, enhancing the overall experience.
 
-AI-powered suggestions for optimizing resumes. Real-time grammar and formatting checks. Customizable, industry-specific templates. Job description analysis for tailoring resumes. Export options in PDF and Word formats. Tech Stack:
-
-Frontend: Vue.js with Tailwind CSS. Backend: Flask with OpenAI API for text generation. Database: Firebase Firestore for real-time data. APIs: Grammarly API for grammar checks. DevOps: Google Cloud Platform (GCP). Why This Project: Resumely will help me deepen my understanding of AI and natural language processing. It’s exciting to work on a tool that can directly benefit job seekers while sharpening my skills in API integration and responsive design.
+---
