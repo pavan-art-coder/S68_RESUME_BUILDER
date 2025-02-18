@@ -79,3 +79,20 @@ Compare it with the stored hashed password for authentication.
 
 ## **Milstone 8
 In this milestone we created two components called Home.jsx and productcard.jsx. product card.jsx is the template used in home.jsx to map out all the products and display them. We also added routes to the home.jsx to display it when the page loads. Based on the number of products the products are mapped and displayed.
+
+## **Milestone 10: Product Schema & API Endpoint
+Learning Goals 🎯
+By the end of this milestone, you will:
+
+Learn how to write a product schema.
+Learn how to create an endpoint to validate and store product details in MongoDB.
+Product Schema
+Define the structure of product data (e.g., name, description, price, image URL) using Mongoose.
+Ensure each field has proper validation (e.g., required fields, correct data types).
+Endpoint Creation
+Build a POST endpoint to receive product data.
+Validate and save the product details to MongoDB.
+Why Validation?
+Validation ensures that only valid data is saved in the database, maintaining data integrity and preventing errors.
+
+This milestone is essential for backend development and securing data consistency in your project. Keep going! 🚀
