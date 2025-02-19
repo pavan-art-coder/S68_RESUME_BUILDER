@@ -8,6 +8,7 @@ import { Signup } from './Component/Signup'
 import { Home } from './page/Home'
 import Productform from './Component/productform'
 import { Productcard } from './Component/Productcard'
+import NavBar from './Component/NavBar'
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
 
   return (
     <>
+    <NavBar/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
