@@ -186,4 +186,10 @@ In this milestone, the following changes were made:
 - HTML, CSS, JavaScript
 - React (if used)
 - Node.js (if used for backend)
+
+## Milestone 15 - Adding a Navbar Component 🚀
+
+Project Overview
+
+This project is an ecommerce application where users can browse, add products, and manage their cart. As part of Milestone 15, we have implemented a Navbar component to enhance navigation across different pages of the application
  
