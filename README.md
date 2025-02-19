@@ -187,9 +187,9 @@ In this milestone, the following changes were made:
 - React (if used)
 - Node.js (if used for backend)
 
-Milestone 15 - Adding a Navbar Component 🚀
+## Milestone 15 - Adding a Navbar Component 🚀
 Project Overview This project is an ecommerce application where users can browse, add products, and manage their cart. As part of Milestone 15, we have implemented a Navbar component to enhance navigation across different pages of the application
 
-Milestone 16: Product Info Page
+## Milestone 16: Product Info Page
 Learning Goals 🎯 By completing this milestone, you will learn: How to create a new page to display product details. How to add a quantity selector and "Add to Cart" button. Steps for Milestone 16 📝 Create a Product Info Page: Display product details such as name, description, price, and image. Include a dropdown or input field to select the quantity. Add an "Add to Cart" button. Ensure Smooth Navigation: Users should be able to navigate from the product list to the product info page. Update Functionality: Ensure the selected quantity is updated correctly. Clicking "Add to Cart" should update the shopping cart. Responsive Design: Ensure the page is mobile-friendly and works well on all screen sizes.
  
