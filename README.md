@@ -186,4 +186,66 @@ In this milestone, the following changes were made:
 - HTML, CSS, JavaScript
 - React (if used)
 - Node.js (if used for backend)
+
+## Milestone 15 - Adding a Navbar Component 🚀
+Project Overview
+This project is an ecommerce application where users can browse, add products, and manage their cart. As part of Milestone 15, we have implemented a Navbar component to enhance navigation across different pages of the application
+
+## Milestone 16: Product Info Page
+Learning Goals 🎯
+By completing this milestone, you will learn:
+How to create a new page to display product details.
+How to add a quantity selector and "Add to Cart" button.
+Steps for Milestone 16 📝
+Create a Product Info Page:
+Display product details such as name, description, price, and image.
+Include a dropdown or input field to select the quantity.
+Add an "Add to Cart" button.
+Ensure Smooth Navigation:
+Users should be able to navigate from the product list to the product info page.
+Update Functionality:
+Ensure the selected quantity is updated correctly.
+Clicking "Add to Cart" should update the shopping cart.
+Responsive Design:
+Ensure the page is mobile-friendly and works well on all screen sizes.
+
+
+## Milestone 17: Backend Endpoint for Cart Functionality
+Learning Goals 🎯
+By completing this milestone, you will learn:
+How to edit the user schema to store cart products.
+How to write an endpoint to receive product details and store them in the database.
+Steps for Milestone 17 📝
+Write the Cart Schema:
+Modify the user schema to include a cart field.
+Define a new schema for storing products in the cart.
+Create Backend Endpoint:
+Write an API endpoint to receive product details.
+Store the received product details in the cart collection/database.
+Database Integration:
+Ensure data is correctly saved and retrieved from the database.
+Testing the Endpoint:
+Use Postman or another tool to test the API.
+Ensure the cart updates correctly when new products are added.
+
+
+## Milestone 18: Backend Endpoint for Cart Page
+Learning Goals 🎯
+By completing this milestone, you will learn:
+How to create an endpoint to receive requests from the cart page.
+How to write a backend endpoint to fetch all the products inside the cart using the user's email.
+Steps for Milestone 18 📝
+Create a Backend Endpoint for the Cart Page:
+Develop an API endpoint that receives a request from the cart page.
+Fetch Cart Products for a User:
+Write an API to retrieve all products stored inside the cart based on the user's email.
+Database Integration:
+Ensure the cart data is fetched correctly from the database.
+Testing the Endpoint:
+Use Postman or another tool to test API responses.
+Verify that all products inside the cart are fetched correctly.
+
+
+
+
  
