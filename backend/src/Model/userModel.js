@@ -1,6 +1,8 @@
-const {model, Schema} = require('mongoose');
 
-const userSchema = new Schema({
+const {model} = require('mongoose');
+const mongoose = require('mongoose');
+
+const userSchema =new mongoose.Schema ({
     name:{
         type: String,
         required: [true, "Please enter your name!"],
@@ -13,28 +15,28 @@ const userSchema = new Schema({
         type: String,
         required: [true, "Please enter your password"],
         minLength: [4, "Password should be greater than 4 characters"],
+        
       },
       cart:[
         {
           productid:{
             type:String,
             unique:true,
-            required:true
+            required:true,
           },
           productname:{
             type:String,
             unique:true,
-            required:true
+            required:true,
           },
           quantity:{
             type:Number,
-            min:1,
-            required:true
-          }
+            min : 1,
+            required:true,
+          },
 
         }
       ]
-      
     //   phoneNumber:{
     //     type: Number,
     //   },
@@ -80,8 +82,8 @@ const userSchema = new Schema({
     //  },
     //  resetPasswordToken: String,
     //  resetPasswordTime: Date,
-});
+    });
 
-const userModel = model('User', userSchema);
-
-model.exports = userModel;
+    const userModel=model('User',userSchema);  
+    
+    module.exports=userModel;
