@@ -7,10 +7,28 @@ import { useParams } from 'react-router-dom';
 const Singleproductpage = () => {
 
     const {product,setproduct}=useState({})
-    const {loading,setLoading}=useState(true)
+    const {loading ,setLoading}=useState(true)
     const {error,setError}=useState(false)
     const {quantity,setquantity}=useState(0)
     const {id}=useParams()
+
+
+     const cart = async (email, productid, productname, quantity) => {
+        try {
+            const response = await axios.post(
+                "http://localhost:8000/cart",
+                {
+                    email: email,
+                    productid: productid,
+                    productname: productname,
+                    quantity: quantity,
+                }
+            );
+            console.log("Added to cart:", response.data.cart);
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     useEffect(() => {
         const fetchProduct = async () => {
