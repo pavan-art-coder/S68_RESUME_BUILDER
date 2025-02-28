@@ -246,6 +246,13 @@ Use Postman or another tool to test API responses.
 Verify that all products inside the cart are fetched correctly.
 
 
+## 📍 Milestone 20 - Achievements  
+In **Milestone 20**, the following tasks were completed:  
+✅ [Briefly explain what was achieved in Milestone 20]  
+✅ [List new features, bug fixes, or improvements]  
+✅ [Mention any updates to the database, API, or frontend]  
+
+
 
 
  
