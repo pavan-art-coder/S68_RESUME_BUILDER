@@ -67,4 +67,18 @@ userrouter.post("/login",async(req,res)=>{
 
 })
 
+userrouter.get("/profile", async(req, res) => {
+    const {email} = req.query
+
+    if(!email){
+        return res.status(400).json({message:"Email is required"});
+    }
+
+    const user = await userModel.findOne({email:email})
+    if(!user){
+        return res.status(404).json({message:"User not found"});
+    }
+    res.status(200).json({user:user});
+})
+
 module.exports = userrouter;
