@@ -186,4 +186,16 @@ In this milestone, the following changes were made:
 - HTML, CSS, JavaScript
 - React (if used)
 - Node.js (if used for backend)
- 
+
+
+ # Milestone 19 - What Was Achieved
+
+In this milestone, we implemented a **Product Card** component to display product details on the homepage. 
+
+### Features:
+- Display **product image, name, and price**.
+- Created a reusable **View Product Button** component.
+- Used **Tailwind CSS** for styling.
+- Ensured modularity by separating the button component from the product card.
+
+All changes have been committed and pushed to the repository.
