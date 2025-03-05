@@ -1,8 +1,6 @@
+const {model, Schema} = require('mongoose');
 
-const {model} = require('mongoose');
-const mongoose = require('mongoose');
-
-const userSchema =new mongoose.Schema ({
+const userSchema = new Schema({
     name:{
         type: String,
         required: [true, "Please enter your name!"],
@@ -15,53 +13,53 @@ const userSchema =new mongoose.Schema ({
         type: String,
         required: [true, "Please enter your password"],
         minLength: [4, "Password should be greater than 4 characters"],
-        
       },
       cart:[
         {
           productid:{
             type:String,
             unique:true,
-            required:true,
+            required:true
           },
           productname:{
             type:String,
             unique:true,
-            required:true,
+            required:true
           },
           quantity:{
             type:Number,
-            min : 1,
-            required:true,
-          },
+            min:1,
+            required:true
+          }
 
         }
-      ]
-    //   phoneNumber:{
-    //     type: Number,
-    //   },
-    //   addresses:[
-    //     {
-    //       country: {
-    //         type: String,
-    //       },
-    //       city:{
-    //         type: String,
-    //       },
-    //       address1:{
-    //         type: String,
-    //       },
-    //       address2:{
-    //         type: String,
-    //       },
-    //       zipCode:{
-    //         type: Number,
-    //       },
-    //       addressType:{
-    //         type: String,
-    //       },
-    //     }
-    //   ],
+      ],
+      
+      phoneNumber:{
+        type: Number,
+      },
+      addresses:[
+        {
+          country: {
+            type: String,
+          },
+          city:{
+            type: String,
+          },
+          address1:{
+            type: String,
+          },
+          address2:{
+            type: String,
+          },
+          zipCode:{
+            type: Number,
+          },
+          addressType:{
+            type: String,
+          },
+        }
+      ],
     //   role:{
     //     type: String,
     //     default: "user",
@@ -82,8 +80,8 @@ const userSchema =new mongoose.Schema ({
     //  },
     //  resetPasswordToken: String,
     //  resetPasswordTime: Date,
-    });
+});
 
-    const userModel=model('User',userSchema);  
-    
-    module.exports=userModel;
+const userModel = model('User', userSchema);
+
+model.exports = userModel;
