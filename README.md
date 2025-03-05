@@ -256,3 +256,25 @@ In **Milestone 20**, the following tasks were completed:
 
 
  
+## Milestone 15
+In this milestone I created a new navbar that renders on all the pages. I added Navlinks for Home, productform, login and signup. I first made a new jsx file called navbar and then created the whole navbar. I also styled it using Tailwind css. I also had other issues that I fixed in home.jsx and styled productform jsx as it had no styling before.
+
+## Milestone 16
+Created singleproduct.jsx. The pages is made to show details about the product. I also routed it and made other minor changes.
+
+## Milestone 17 & 18
+In these two Milestones we first added the cart details to the schema. Then we also created a post request for sending the details and storing them on the database. We also created an endpoint to receive request from cart page.
+
+## Milestone 19
+Backend: In this milestone I added the endpoint for the put request from the frontend and then also did app.use(cors()). I also routed it in the controller as well as adding the logic for it.
+
+Frontend: I added the components cart.jsx and cartcomponent.jsx where I will render the frontend for cart page. I also used fetch request to get and display the products in the cart. I also added fetch request to put and update the changes made to the quantity of the page using the + and - icons on each product card.
+
+## Milestone 20
+In this milestone we made the /profile endpoint to get the user data and then save it in an object. after this we made the profile.jsx where we will show all the user details.
+
+## Milestone 21
+In this Milestone I made the Address.jsx which consists of a form component where users can enter details such as country, state, pincode etc. I made use of usestate hook to store the inputs and then sent it to the backend using axios. Once the data has been sent to the backend the usenavigate hook kicks in and navigates to the /profile page. (Do note that only the frontend has been done in this milestone).
+
+## Milestone 22
+In this milestone I created an enpoint to recieve the data of the address from the frontend. I also used JWT to authenticate the process.
