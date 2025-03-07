@@ -216,3 +216,6 @@ In this milestone, we completed the following:
 - [Briefly list the key updates, features, or bug fixes you implemented]
 - [Mention any dependencies or tools added]
 - [If relevant, include setup instructions for this milestone]
+
+## Milestone 24
+In this milestone we: First we will display all the products we are ordering Next we will display the address user selected to deliver We will display the total value of the cart We will have an place order button at the bottom.
