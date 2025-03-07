@@ -278,3 +278,10 @@ In this Milestone I made the Address.jsx which consists of a form component wher
 
 ## Milestone 22
 In this milestone I created an enpoint to recieve the data of the address from the frontend. I also used JWT to authenticate the process.
+
+## Milestone 23: What was Achieved
+
+In this milestone, we completed the following:
+- [Briefly list the key updates, features, or bug fixes you implemented]
+- [Mention any dependencies or tools added]
+- [If relevant, include setup instructions for this milestone]
