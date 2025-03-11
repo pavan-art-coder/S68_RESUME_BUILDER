@@ -288,3 +288,17 @@ In this milestone, we completed the following:
 
 ## Milestone 24
 In this milestone we: First we will display all the products we are ordering Next we will display the address user selected to deliver We will display the total value of the cart We will have an place order button at the bottom.
+
+
+## Milestone 25: Creating a End-point to recieve order details
+
+Created an endpoint that will receive the products, user, address details
+will get the mail of the user using that you need to retrive the _id of the user
+For each product the order will be different with same address
+using order schema it will store order details in mongodb order collection
+
+
+## Milestone 26: Creating a (get)End-point to get order details
+Created an endpoint that displays the order details
+get the mail of the user to retrive the _id of the user
+Using that _id it will get all the orders of that user
