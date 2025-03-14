@@ -1,17 +1,26 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from "react-router-dom";
 
-function NavBar() {
+function Navbar() {
   return (
-        <>
-        <nav className="bg-gray-800 p-4">
-            <NavLink to="/" className="text-white px-3 py-2 rounded-md text-sm font-medium">Home</NavLink>
-            <NavLink to="/my-product" className="text-white px-3 py-2 rounded-md text-sm font-medium">My-product</NavLink>
-            <NavLink to="/add-product" className="text-white px-3 py-2 rounded-md text-sm font-medium">Add-product</NavLink>
-            <NavLink to="/cart" className="text-white px-3 py-2 rounded-md text-sm font-medium">Cart</NavLink>
+    <>
+        <nav className="bg-gray-800 p-4 shadow-md">
+            <div className="container mx-auto flex justify-between items-center">
+                <div>
+                    <h1 className="text-white text-2xl font-bold">E-commerce</h1>
+                </div>
+                <div className="flex space-x-4">
+                    <NavLink to="/" className="text-white hover:text-gray-400">Home</NavLink>
+                    <NavLink to="/productform" className="text-white hover:text-gray-400">Productform</NavLink>
+                    <div className="flex space-x-4">
+                        <NavLink to="/login" className="text-white hover:text-gray-400">Login</NavLink>
+                        <NavLink to="/signup" className="text-white hover:text-gray-400">Signup</NavLink>
+                    </div>
+                </div>
+            </div>
         </nav>
-        </>
+    </>
   )
 }
 
-export default NavBar
+export default Navbar
