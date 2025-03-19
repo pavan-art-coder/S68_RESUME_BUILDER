@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from '../components/auth/nav';
 import { useLocation, useNavigate } from 'react-router-dom';
-
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 const OrderConfirmation = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -161,6 +160,17 @@ const OrderConfirmation = () => {
                         <div className='p-4 border rounded-md'>
                             <p>Cash on Delivery</p>
                         </div>
+                        
+                        <PayPalScriptProvider options={{ clientId: "ASzWeA47KbPHdclv6yXYjVv_e7TQoCPZAnvU1Z3Dj1eshMh0NMvyvIsfg6JThmyHD3gjiIXSWh5F7HKC" }}>
+                             <PayPalButtons style={{ layout: "horizontal" }} 
+                                 createOrder={(data,actions)=>{
+                                    return actions.order.create({purchase_units:[{amaount:{value:totalPrice.toFixed(2)}}]})
+                                 }}
+                                 onApprove={(data,actions)=>{
+                                    return actions.order.capture()
+                                 }}
+                             >Pay with paypal </PayPalButtons>
+                        </PayPalScriptProvider>
                     </div>
                     {/* Place Order Button */}
                     <div className='flex justify-center'>
