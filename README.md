@@ -240,3 +240,7 @@ In this milestone we created a orderpage in the forntend and the component for d
 
 ## Milestone 28
 In my-orders page for every order add cancel order button has been added. If the order is already canceled this button will not be displayed I have created an endpoint that will receive the order-id Get the order using this id and mark the status canceled and save
+
+## Milestone 30,31 and 32
+After creating a PayPal account and getting the UserID inside the sandbox account, implement online payment using the PayPal API with the client key created earlier. Install the react-paypal-js NPM package, which provides the PayPalScriptProvider component to display online payment methods like credit or debit cards. Learn how to use and integrate the PayPal API for handling payments. For global state management, install the react-redux package and create a store folder with two files: store.js and userActions.js. In store.js, configure a store with a userReducer to handle the global email state. In userActions.js, create a function called setEmail to store the email state inside the global store. In index.js, wrap the App component inside the Provider component with the store as props. Use useDispatch in the Login page to store the email in the global state and useSelector in all remaining pages to access the stored email.
+
