@@ -311,4 +311,44 @@ In this milestone we created a orderpage in the forntend and the component for d
 In my-orders page for every order add cancel order button has been added. If the order is already canceled this button will not be displayed I have created an endpoint that will receive the order-id Get the order using this id and mark the status canceled and save
 
 ## Milestone 29
-In this Milestone we created an account in paypal and got the Client ID. We also looked at NPM documentation for react-paypal-js and used it to make the paypal button and integrate the frontend logic for the payment page. here are the steps I followed: Please create an PayPal account first PayPal developer dashboard Once you login you can see an option for an sandbox accounts. Copy the UserID of that account and save it. In this sandbox accounts you can find your client id copy and save it. In your order conformation page you need two options for payment one is COD and another is online payment. Create radio buttons to select COD or online payment and when we click on online payment PayPal buttons need to be displayed. In next milestone we will write an code to display and use those PayPal online Payments buttons.
+In this milestone, we created an account in PayPal and got the Client ID. We also looked at the NPM documentation for `react-paypal-js` and used it to create the PayPal button and integrate the frontend logic for the payment page. 
+
+### Steps Followed:
+1. **Create a PayPal Account**:  
+   - Visit the PayPal Developer Dashboard.
+   - Log in and navigate to **Sandbox Accounts**.
+   - Copy the User ID of the sandbox account and save it.
+   - Find the **Client ID** in the sandbox accounts and save it.
+
+2. **Implement Payment Options**:  
+   - On the **Order Confirmation Page**, create two payment options:
+     - **Cash on Delivery (COD)**
+     - **Online Payment via PayPal**  
+   - Use **radio buttons** to allow users to select a payment method.
+   - When **Online Payment** is selected, display PayPal buttons.
+
+---
+
+## Milestone 30, 31, and 32
+1. **PayPal Integration**:
+   - After creating a PayPal account and obtaining the User ID from the sandbox account, implement online payment using the PayPal API.
+   - Use the previously created **Client Key**.
+   - Install the `react-paypal-js` NPM package.
+   - Use the `PayPalScriptProvider` component to display online payment options like **credit or debit cards**.
+   - Learn how to use and integrate the **PayPal API** for handling payments.
+
+2. **Global State Management (Redux)**:
+   - Install `react-redux` for global state management.
+   - Create a `store` folder with two files:
+     - **store.js**: Configure a Redux store with a `userReducer` to manage the global email state.
+     - **userActions.js**: Create a function `setEmail` to store the email in the global state.
+   - In `index.js`, wrap the `<App />` component inside the `<Provider>` component and pass the store as a prop.
+   - Use `useDispatch` in the **Login Page** to store the email in the global state.
+   - Use `useSelector` in all other pages to access the stored email.
+
+---
+
+## Milestone 33
+In this milestone, I implemented **JWT Authentication**:
+- Created a **JWT token upon login**.
+- Stored the token **inside a cookie** for authentication.
