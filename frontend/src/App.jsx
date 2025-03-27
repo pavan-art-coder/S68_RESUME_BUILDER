@@ -8,8 +8,9 @@ import Navbar from './Component/Navbar'
 import Singlecard from './Component/Singlecard'
 import Productform from './Component/Productform'
 import Cart from './page/cart'
-import SelectAddress from './page/SelectAddress'
+import SelectAddress from './page/selectaddress'
 import OrderConfirmation from './page/Oderconfirmation'
+import PrivateRouter from './Router/PrivateRouter'
 
 
 function App() {
@@ -23,7 +24,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path='/cart'  element={<Cart/>}/>
-        <Route path="/productform" element={<Productform />} />
+        <Route path="/productform" element={
+          <PrivateRouter>
+          <Productform />
+          </PrivateRouter>} />
        <Route path='/product/:id' element={<Singlecard/>}/>
        <Route path='/selectaddress' element={<SelectAddress/>}/>  
        <Route path='/orderconfirmation' element={<OrderConfirmation/>}/>

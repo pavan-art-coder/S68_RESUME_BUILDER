@@ -161,13 +161,25 @@ const OrderConfirmation = () => {
                             <p>Cash on Delivery</p>
                         </div>
                         
-                        <PayPalScriptProvider options={{ clientId: "ASzWeA47KbPHdclv6yXYjVv_e7TQoCPZAnvU1Z3Dj1eshMh0NMvyvIsfg6JThmyHD3gjiIXSWh5F7HKC" }}>
+                        <PayPalScriptProvider options={{ clientId: "AYGwnwmeBjjWperGy4a-RWi9mKWFg6LOl8JTWq4QYLF_Sz20OA_-IE6mEpye1F0XbyXeJQQcsXmawKHB" }}>
                              <PayPalButtons style={{ layout: "horizontal" }} 
                                  createOrder={(data,actions)=>{
                                     return actions.order.create({purchase_units:[{amaount:{value:totalPrice.toFixed(2)}}]})
                                  }}
-                                 onApprove={(data,actions)=>{
-                                    return actions.order.capture()
+                                 onApprove={async(data,actions)=>{
+                                    const order1= actions.order.capture()
+                                    try{
+                                    const response=await axios.post('http://localhost:3000/order/verify-payment',{orderId:order1.id},
+                                        )
+
+                                   if(response.data.success){
+                                    onSuccess()
+                                   }
+
+                                    }catch(err){
+                                        console.log(err)
+                                    }
+
                                  }}
                              >Pay with paypal </PayPalButtons>
                         </PayPalScriptProvider>
