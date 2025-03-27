@@ -240,3 +240,16 @@ In this milestone we created a orderpage in the forntend and the component for d
 
 ## Milestone 28
 In my-orders page for every order add cancel order button has been added. If the order is already canceled this button will not be displayed I have created an endpoint that will receive the order-id Get the order using this id and mark the status canceled and save
+
+
+## Milestone 29: PayPal Integration
+ 
+Implemented Features
+Added COD & PayPal payment options.
+Display PayPal button when "Online Payment" is selected.
+Used PayPal Sandbox Client ID for setup.
+Changes Made
+orderConfirmation.html → Added payment options.
+script.js → Show/hide PayPal button on selection.
+ Next Steps
+Implement actual PayPal payment processing in Milestone 30.
