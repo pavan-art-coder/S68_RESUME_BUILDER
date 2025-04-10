@@ -13,7 +13,7 @@ const [tags, setTags] = useState('');
 const [email, setEmail] = useState('');
 
 const [preview, setPreview] = useState([]);
-const [image, setImage] = useState([]);
+const [images, setImage] = useState([]);
 
 const handleImage = (e) => {
     const file = Array.from(e.target.files)
@@ -32,7 +32,7 @@ const handlesubmit = async (e) => {
     formData.append('stock', stock)
     formData.append('tags', tags)
     formData.append('email', email)
-    image.forEach((img) => {
+    images.forEach((img) => {
         formData.append('image', img)
     })
 

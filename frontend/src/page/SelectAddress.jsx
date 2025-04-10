@@ -6,12 +6,12 @@ const SelectAddress = () => {
     const [addresses, setAddresses] = useState([]);
     const [error, setError] = useState(null); 
     const navigate = useNavigate();
-    const email="a@gmail.com"
+    const email = "a@gmail.com";
+
     useEffect(() => {
         const fetchAddresses = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/user/get-addresses');
-                
+                const response = await axios.get('http://localhost:5000/auth/get-address');
                 const data = response.data;
                 if (data && Array.isArray(data.addresses)) {
                     setAddresses(data.addresses);
@@ -28,7 +28,7 @@ const SelectAddress = () => {
     }, []);
 
     const handleSelectAddress = (addressId) => {
-        navigate('/order-confirmation',{state:{addressId,email:email}});
+        navigate('/order-confirmation', { state: { addressId, email } });
     };
 
     return (
@@ -36,20 +36,16 @@ const SelectAddress = () => {
             <div className='flex-grow flex justify-center items-center p-4'>
                 <div className='w-full max-w-4xl border border-neutral-300 rounded-md flex flex-col p-6 bg-white shadow-md'>
                     <h2 className='text-2xl font-semibold mb-6 text-center'>Select Shipping Address</h2>
-                    
-                    {error && <p className='text-red-500 text-center'>{error}</p>} {/* 🔹 Display error */}
-
+                    {error && <p className='text-red-500 text-center'>{error}</p>}
                     {addresses.length > 0 ? (
                         <div className='space-y-4 overflow-auto max-h-96'>
                             {addresses.map((address) => (
-                                <div
-                                    key={address._id}
-                                    className='border p-4 rounded-md flex justify-between items-center hover:shadow-md transition-shadow'
-                                >
+                                <div key={address._id} className='border p-4 rounded-md flex justify-between items-center hover:shadow-md transition-shadow'>
                                     <div>
                                         <p className='font-medium'>
-                                            {address.address1}
-                                            {address.address2 ? , ${address.address2} : ''}, {address.city}, {address.state}, {address.zipCode}
+                                            {address.address1}{" "}
+                                            {address.address2 ? `${address.address2}, ` : ''}
+                                            {address.city}, {address.state}, {address.zipCode}
                                         </p>
                                         <p className='text-sm text-gray-600'>{address.country}</p>
                                         <p className='text-sm text-gray-500'>Type: {address.addressType || 'N/A'}</p>

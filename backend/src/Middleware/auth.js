@@ -1,11 +1,11 @@
 const ErrorHandler = require("../utils/ErrorHandler");
-const catchAsyncErrors = require("./catchAsyncErrors");
+const catchAsyncErrors = require("./catchAsyncError");
 const jwt = require("jsonwebtoken");
-require('dotenv').config({path:'../Config/.env'})
+require('dotenv').config()
 
 const auth=async(req,res,next)=>{
-  const tokenauth=req.cookie.autherization
-  const secret = process.env.secretkey;
+  const tokenauth=req.cookies.autherization
+  const secret = process.env.JWT_SECERT;
 
   jwt.verify(token,secret , function(err, decoded) {
     if(err){

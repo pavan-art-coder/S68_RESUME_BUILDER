@@ -26,7 +26,7 @@ const handleIncrement=()=>{
         const fetchProduct = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:3000/product/${id}`
+                    `http://localhost:5000/product/${id}`
                 );
                 console.log("Fetched product:", response.data.product);
                 setproduct(response.data.product); // Ensure correct state setting
@@ -53,7 +53,7 @@ const handleIncrement=()=>{
             <div className="w-full bsm:w-2/3 md:w-1/3 rounded-lg">
         {product.images && product.images.length > 0 ? (
             <img
-                src={`http://localhost:3000${product.images[0]}`}
+                src={`http://localhost:5000${product.images[0]}`}
                 alt={product.name}
                 className="w-full h-full object-contain bsm:object-cover"
                 style={{ maxHeight: "500px" }} // Adjust the max height as needed
