@@ -7,7 +7,7 @@ const path = require('path');
 
 // Import Routers
 const userrouter = require('./src/Controllers/users');
-const productrouter = require('./src/Controllers/Product');
+const productrouter = require('./src/Controllers/products'); // 🔧 Consistent filename
 const orderrouter = require('./src/Controllers/Order');
 
 const app = express();
@@ -15,30 +15,30 @@ const PORT = process.env.PORT || 5000;
 const URL = process.env.MONGO_URI;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', // 🔐 Replace with your frontend URL
+    credentials: true,
+}));
 app.use(cookieParser());
-
-// ⚠️ Use express.json only for JSON content
-app.use(express.json()); 
-app.use(express.urlencoded({ extended: true })); // ✅ Handles x-www-form-urlencoded (important for forms)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // ✅ Serve static image files
 app.use('/products', express.static(path.join(__dirname, 'uploads/products')));
 
 // Routes
-app.get('/', (req, res) => res.send('Hello World'));
-app.use('/order', orderrouter);
+app.get('/', (req, res) => res.send('✅ API is running!'));
 app.use('/auth', userrouter);
-app.use(express.urlencoded({ extended: true }));
 app.use('/product', productrouter);
+app.use('/order', orderrouter);
 
 // Start Server
 app.listen(PORT, async () => {
     try {
         await connectDB(URL);
-        console.log(`✅ Server running on http://localhost:${PORT}`);
+        console.log(`🚀 Server running on http://localhost:${PORT}`);
     } catch (err) {
-        console.error("❌ Server failed to start:", err);
+        console.error("❌ Server failed to start:", err.message);
         process.exit(1);
     }
 });

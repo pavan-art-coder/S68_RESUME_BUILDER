@@ -3,131 +3,102 @@ const userModel = require("../Model/userModel");
 const { upload } = require("../Multer/multer");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const path = require("path"); // ✅ Import path module
-const ErrorHandler = require("../Middleware/Error"); // ✅ Import error handler
+const path = require("path");
+const ErrorHandler = require("../Middleware/Error");
 const AsyncError = require("../Middleware/catchAsyncError");
 const auth = require("../Middleware/auth");
 require("dotenv").config();
 
 const userrouter = Router();
-const secret = process.env.JWT_SECERT;
+const secret = process.env.JWT_SECRET;
 
 // ✅ Create User Route
-userrouter.post("/create-user", async (req, res, next) => {
+userrouter.post("/create-user", upload.single("file"), AsyncError(async (req, res, next) => {
     const { name, email, password } = req.body;
     const userEmail = await userModel.findOne({ email });
-    
-    if (userEmail) {
-        return next(new ErrorHandler("User already exists", 400));
-    }
 
-    const filename = req.file.filename;
+    if (userEmail) return next(new ErrorHandler("User already exists", 400));
+
+    const filename = req.file?.filename || "";
     const fileUrl = path.join(filename);
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const createuser=await userModel.create({
+    const createuser = await userModel.create({
         name,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        avatarurl: fileUrl,
     });
 
-    res.status(201).json({ message: "User created successfully" ,user:createuser});
-});
-// upload.single("file")
+    res.status(201).json({ message: "User created successfully", user: createuser });
+}));
 
 // ✅ Login Route
-userrouter.post("/login", async (req, res) => {
+userrouter.post("/login", AsyncError(async (req, res) => {
     const { email, password } = req.body;
     const check = await userModel.findOne({ email });
 
-    if (!check) {
-        return res.status(400).json({ message: "User not found" });
-    }
+    if (!check) return res.status(400).json({ message: "User not found" });
 
-    bcrypt.compare(password, check.password, (err, result) => {
-        if (err || !result) {
-            return res.status(400).json({ message: "Invalid password" });
-        }
+    const isPasswordValid = await bcrypt.compare(password, check.password);
+    if (!isPasswordValid) return res.status(400).json({ message: "Invalid password" });
 
-        jwt.sign({ email: email }, secret, (err, token) => {
-            if (err) {
-                return res.status(400).json({ message: "Invalid jwt" });
-            }
-            res.cookie("authorization", token, {
-                expires: new Date(Date.now() + 900000),
-                httpOnly: true,
-                domain: ".localhost.com",
-            });
-            res.status(200).json({ token: token });
-        });
+    const token = jwt.sign({ email: check.email }, secret, { expiresIn: "15m" });
+
+    res.cookie("authorization", token, {
+        expires: new Date(Date.now() + 15 * 60 * 1000),
+        httpOnly: true,
+        domain: "localhost", // remove . before localhost
     });
-});
 
-// ✅ Get User Profile
-userrouter.get("/profile", async (req, res) => {
+    res.status(200).json({ token });
+}));
+
+// ✅ Get User Profile (public route)
+userrouter.get("/profile", AsyncError(async (req, res) => {
     const { email } = req.query;
-    if (!email) {
-        return res.status(400).json({ message: "Email cannot be empty!" });
-    }
+    if (!email) return res.status(400).json({ message: "Email is required" });
 
-    try {
-        const user = await userModel.findOne({ email: email });
+    const user = await userModel.findOne({ email });
 
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-        const Users = {
-            name: user.name,
-            email: user.email,
-            phone: user.phoneNumber,
-            image: user.avatarurl,
-            address: user.address,
-        };
+    const userProfile = {
+        name: user.name,
+        email: user.email,
+        phone: user.phoneNumber,
+        image: user.avatarurl,
+        address: user.addresses,
+    };
 
-        res.status(200).json({ message: "Successfully retrieved profile", user: Users });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+    res.status(200).json({ message: "Profile retrieved", user: userProfile });
+}));
 
-// ✅ Add Address Route
-userrouter.post("/add-address", auth, async (req, res) => {
-    try {
-        const email = req.user.email; // ✅ Fix auth user data
-        const { country, city, address1, address2, zipCode, addressType } = req.body;
+// ✅ Add Address (protected route)
+userrouter.post("/add-address", auth, AsyncError(async (req, res) => {
+    const email = req.user;
 
-        const user = await userModel.findOne({ email: email });
-        if (!user) return res.status(400).json({ message: "User not found" });
+    const user = await userModel.findOne({ email });
+    if (!user) return res.status(400).json({ message: "User not found" });
 
-        const newAddress = { country, city, address1, address2, zipCode, addressType };
+    const { country, city, address1, address2, zipCode, addressType } = req.body;
 
-        user.addresses.push(newAddress);
-        await user.save();
+    const newAddress = { country, city, address1, address2, zipCode, addressType };
 
-        res.status(200).json({ message: "Address added successfully" });
-    } catch (err) {
-        console.error("Error in address:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
+    user.addresses.push(newAddress);
+    await user.save();
 
-// ✅ Get Address Route
-userrouter.get("/get-address", auth, async (req, res) => {
-    const email = req.user.email;
+    res.status(200).json({ message: "Address added successfully" });
+}));
 
-    try {
-        const user = await userModel.findOne({ email: email });
-        if (!user) return res.status(400).json({ message: "User not found" });
+// ✅ Get Addresses (protected route)
+userrouter.get("/get-address", auth, AsyncError(async (req, res) => {
+    const email = req.user;
 
-        res.status(200).json({
-            message: "Successfully retrieved address",
-            addresses: user.addresses,
-        });
-    } catch (err) {
-        console.error("Error in get address:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
+    const user = await userModel.findOne({ email });
+    if (!user) return res.status(400).json({ message: "User not found" });
+
+    res.status(200).json({ message: "Address list retrieved", addresses: user.addresses });
+}));
 
 module.exports = userrouter;
