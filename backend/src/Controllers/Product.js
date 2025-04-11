@@ -1,11 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Product = require("../model/product");
-const User = require("../model/user");
+const Product = require("../Model/ProductModel");
+const User = require("../Model/userModel");
 const router = express.Router();
-const { pupload } = require("../multer");
+const { upload } = require("../Multer/multer");
 const path = require('path');
-const Order = require("../model/order")
+const Order = require("../Model/orderSchema")
 const validateProductData = (data) => {
   const errors = [];
   if (!data.name) errors.push("Product name is required");
@@ -20,9 +20,10 @@ const validateProductData = (data) => {
 };
 router.post(
   "/create-product",
-  pupload.array("images", 10),
+  upload.array("images", 10),
   async (req, res) => {
     console.log("🛒 Creating product");
+    console.log("Request Body:", req.body)
     const { name, description, category, tags, price, stock, email } = req.body;
     // Map uploaded files to accessible URLs
     const images = req.files.map((file) => {
@@ -40,9 +41,9 @@ router.post(
     if (validationErrors.length > 0) {
       return res.status(400).json({ errors: validationErrors });
     }
-    if (images.length === 0) {
-      return res.status(400).json({ error: "At least one image is required" });
-    }
+    // if (images.length === 0) {
+    //   return res.status(400).json({ error: "At least one image is required" });
+    // }
     try {
       const user = await User.findOne({ email });
       if (!user) {
@@ -129,7 +130,7 @@ router.get('/product/:id', async (req, res) => {
   }
 });
 
-router.put('/update-product/:id', pupload.array('images', 10), async (req, res) => {
+router.put('/update-product/:id', upload.array('images', 10), async (req, res) => {
   const { id } = req.params;
   const { name, description, category, tags, price, stock, email } = req.body;
   try {

@@ -2,17 +2,17 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const Productcard = ({ id,name, image, price, description }) => {
+export const Productcard = ({ id,name, images, price, description }) => {
 const [imgIndex,setImgIndex] = useState(0);
 const navigate=useNavigate()
 
 useEffect(() => {
   const interval = setInterval(() => {
-    setImgIndex(prev => (prev + 1) % image.length);
+    setImgIndex(prev => (prev + 1) % images.length);
   }, 1000);
 
   return () => clearInterval(interval);
-}, [image.length]);
+}, [images.length]);
 
 
   return (
@@ -20,7 +20,7 @@ useEffect(() => {
       {/* Left Side - Image & Info */}
       <div className="w-full md:w-1/2">
         <img 
-          src={image[imgIndex]} 
+          src={images[imgIndex]} 
           alt={name} 
           className="w-full h-60 object-cover rounded-xl mb-4"
         />

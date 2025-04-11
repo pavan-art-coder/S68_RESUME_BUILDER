@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import NavBar from '../components/auth/nav';
+import NavBar from '../Component/NavBar';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
 const OrderConfirmation = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { addressId, email } = location.state || {};
+
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
@@ -15,40 +17,34 @@ const OrderConfirmation = () => {
 
     useEffect(() => {
         if (!addressId || !email) {
-            navigate('/select-address'); // Redirect if no address selected or email missing
+            navigate('/select-address');
             return;
         }
+
         const fetchData = async () => {
             try {
-                // Fetch selected address
-                const addressResponse = await axios.get('http://localhost:3000/user/get-address');
-                if (addressResponse.status !== 200) {
-                    throw new Error(`Failed to fetch addresses. Status: ${addressResponse.status}`);
-                }
+                const addressResponse = await axios.get('http://localhost:5000/auth/get-address');
                 const addressData = addressResponse.data;
                 const address = addressData.addresses.find(addr => addr._id === addressId);
-                if (!address) {
-                    throw new Error('Selected address not found.');
-                }  
+                if (!address) throw new Error('Selected address not found.');
+
                 setSelectedAddress(address);
-                // Fetch cart products from /cartproducts endpoint
-                const cartResponse = await axios.get('http://localhost:3000//product/getcart', {
-                    params: { email: email },
+
+                const cartResponse = await axios.get('http://localhost:5000/product/cartproducts', {
+                    params: { email },
                 });
-                if (cartResponse.status !== 200) {
-                    throw new Error(`Failed to fetch cart products. Status: ${cartResponse.status}`  );
-                }
+
                 const cartData = cartResponse.data;
-                // Map cart items to include full image URLs
                 const processedCartItems = cartData.cart.map(item => ({
                     _id: item.productId._id,
                     name: item.productId.name,
                     price: item.productId.price,
-                    images: item.productId.images.map(imagePath => http://localhost:3000${imagePath}),
+                    images: item.productId.images.map(imagePath => `http://localhost:5000${imagePath}`),
                     quantity: item.quantity,
                 }));
+
                 setCartItems(processedCartItems);
-                // Calculate total price
+
                 const total = processedCartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
                 setTotalPrice(total);
             } catch (err) {
@@ -58,20 +54,15 @@ const OrderConfirmation = () => {
                 setLoading(false);
             }
         };
+
         fetchData();
     }, [addressId, email, navigate]);
+
     const handlePlaceOrder = async () => {
         try {
             setLoading(true);
-            const response = await axios.post('http://localhost:3000/order/place', {
-                email,
-                addressId,    
-            });
-            if (response.status !== 200 && response.status !== 201) {
-                throw new Error(response.data.message || 'Failed to place order.');
-            }
+            const response = await axios.post('http://localhost:5000/order/place', { email, addressId });
             const data = response.data;
-            console.log('Order placed:', data.order);
             navigate('/order-success', { state: { order: data.order } });
         } catch (err) {
             console.error('Error placing order:', err);
@@ -80,6 +71,11 @@ const OrderConfirmation = () => {
             setLoading(false);
         }
     };
+
+    const handlePayPalSuccess = () => {
+        navigate('/order-success', { state: { order: 'PayPal Order' } });
+    };
+
     if (loading) {
         return (
             <div className='w-full h-screen flex justify-center items-center'>
@@ -87,6 +83,7 @@ const OrderConfirmation = () => {
             </div>
         );
     }
+
     if (error) {
         return (
             <div className='w-full h-screen flex flex-col justify-center items-center'>
@@ -100,19 +97,22 @@ const OrderConfirmation = () => {
             </div>
         );
     }
-  return (
+
+    return (
         <div className='w-full min-h-screen flex flex-col'>
-            
+            <NavBar />
             <div className='flex-grow flex justify-center items-start p-4'>
                 <div className='w-full max-w-4xl border border-neutral-300 rounded-md flex flex-col p-6 bg-white shadow-md'>
                     <h2 className='text-2xl font-semibold mb-6 text-center'>Order Confirmation</h2>
+
                     {/* Selected Address */}
                     <div className='mb-6'>
                         <h3 className='text-xl font-medium mb-2'>Shipping Address</h3>
                         {selectedAddress ? (
                             <div className='p-4 border rounded-md'>
                                 <p className='font-medium'>
-                                    {selectedAddress.address1}{selectedAddress.address2 ? , ${selectedAddress.address2} : ''}, {selectedAddress.city}, {selectedAddress.state}, {selectedAddress.zipCode}
+                                    {selectedAddress.address1}
+                                    {selectedAddress.address2 ? `, ${selectedAddress.address2}` : ''}, {selectedAddress.city}, {selectedAddress.state}, {selectedAddress.zipCode}
                                 </p>
                                 <p className='text-sm text-gray-600'>{selectedAddress.country}</p>
                                 <p className='text-sm text-gray-500'>Type: {selectedAddress.addressType || 'N/A'}</p>
@@ -121,6 +121,7 @@ const OrderConfirmation = () => {
                             <p>No address selected.</p>
                         )}
                     </div>
+
                     {/* Cart Items */}
                     <div className='mb-6'>
                         <h3 className='text-xl font-medium mb-2'>Cart Items</h3>
@@ -130,19 +131,17 @@ const OrderConfirmation = () => {
                                     <div key={item._id} className='flex justify-between items-center border p-4 rounded-md'>
                                         <div className='flex items-center'>
                                             <img
-                                                src={item.images && item.images.length > 0 ? item.images[0] : '/default-avatar.png'} // Use first image or fallback
+                                                src={item.images?.[0] || '/default-avatar.png'}
                                                 alt={item.name}
                                                 className='w-16 h-16 object-cover rounded-md mr-4'
                                             />
                                             <div>
                                                 <p className='font-medium'>{item.name}</p>
                                                 <p className='text-sm text-gray-600'>Quantity: {item.quantity}</p>
-                                                <p className='text-sm text-gray-600'>Price: ${item.price.toFixed(2)}</p>
+                                                <p className='text-sm text-gray-600'>Price: ₹{item.price.toFixed(2)}</p>
                                             </div>
                                         </div>
-                                        <div>
-                                            <p className='font-semibold'>${(item.price * item.quantity).toFixed(2)}</p>
-                                        </div>
+                                        <p className='font-semibold'>₹{(item.price * item.quantity).toFixed(2)}</p>
                                     </div>
                                 ))}
                             </div>
@@ -150,40 +149,46 @@ const OrderConfirmation = () => {
                             <p>Your cart is empty.</p>
                         )}
                     </div>
+
                     {/* Total Price */}
                     <div className='mb-6 flex justify-end'>
-                        <p className='text-xl font-semibold'>Total: ${totalPrice.toFixed(2)}</p>
+                        <p className='text-xl font-semibold'>Total: ₹{totalPrice.toFixed(2)}</p>
                     </div>
- {/* Payment Method */}
+
+                    {/* Payment Method */}
                     <div className='mb-6'>
                         <h3 className='text-xl font-medium mb-2'>Payment Method</h3>
-                        <div className='p-4 border rounded-md'>
+                        <div className='p-4 border rounded-md mb-4'>
                             <p>Cash on Delivery</p>
                         </div>
-                        
+
                         <PayPalScriptProvider options={{ clientId: "AYGwnwmeBjjWperGy4a-RWi9mKWFg6LOl8JTWq4QYLF_Sz20OA_-IE6mEpye1F0XbyXeJQQcsXmawKHB" }}>
-                             <PayPalButtons style={{ layout: "horizontal" }} 
-                                 createOrder={(data,actions)=>{
-                                    return actions.order.create({purchase_units:[{amaount:{value:totalPrice.toFixed(2)}}]})
-                                 }}
-                                 onApprove={async(data,actions)=>{
-                                    const order1= actions.order.capture()
-                                    try{
-                                    const response=await axios.post('http://localhost:3000/order/verify-payment',{orderId:order1.id},
-                                        )
+                            <PayPalButtons
+                                style={{ layout: "horizontal" }}
+                                createOrder={(data, actions) => {
+                                    return actions.order.create({
+                                        purchase_units: [{ amount: { value: totalPrice.toFixed(2) } }],
+                                    });
+                                }}
+                                onApprove={async (data, actions) => {
+                                    const order = await actions.order.capture();
+                                    try {
+                                        const response = await axios.post('http://localhost:5000/order/verify-payment', {
+                                            orderId: order.id
+                                        });
 
-                                   if(response.data.success){
-                                    onSuccess()
-                                   }
-
-                                    }catch(err){
-                                        console.log(err)
+                                        if (response.data.success) {
+                                            handlePayPalSuccess();
+                                        }
+                                    } catch (err) {
+                                        console.error("PayPal verification error:", err);
+                                        setError("Payment verification failed.");
                                     }
-
-                                 }}
-                             >Pay with paypal </PayPalButtons>
+                                }}
+                            />
                         </PayPalScriptProvider>
                     </div>
+
                     {/* Place Order Button */}
                     <div className='flex justify-center'>
                         <button

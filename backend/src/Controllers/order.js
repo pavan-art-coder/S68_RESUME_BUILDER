@@ -1,105 +1,92 @@
-const {Router}=require('express');
+const { Router } = require('express');
 const auth = require('../Middleware/auth');
-const user=require("../Model/userModel");
-const orders = require('../Model/OrderSchema');
-const rolemiddleware = require('../Middleware/role');
-const orderrouter=Router()
+const User = require("../Model/userModel");
+const orders = require('../Model/orderSchema');
+const roleMiddleware = require('../Middleware/role');
+const paypal = require('paypal-rest-sdk'); // Ensure PayPal is configured properly
+const orderRouter = Router();
 
-orderrouter.post('/place',auth,async(req,res)=>{
+// ✅ Place Order Route
+orderRouter.post('/place', auth, async (req, res) => {
     try {
+        const email = req.user;
+        const { orderItems, shippingAddress } = req.body;
 
-        const email=req.user
-        const {  orderItems, shippingAddress } = req.body;
-
-        // Validate request data
-        if (!email) {
-            return res.status(400).json({ message: 'Email is required.' });
-        }
-        if (!orderItems || !Array.isArray(orderItems) || orderItems.length === 0) {
+        if (!email) return res.status(400).json({ message: 'Email is required.' });
+        if (!orderItems || !Array.isArray(orderItems) || orderItems.length === 0) 
             return res.status(400).json({ message: 'Order items are required.' });
-        }
-        if (!shippingAddress) {
+        if (!shippingAddress) 
             return res.status(400).json({ message: 'Shipping address is required.' });
-        }
 
-        // Retrieve user _id from the user collection using the provided email
-        const user = await user.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found.' });
-        }
+        const userData = await User.findOne({ email });
+        if (!userData) return res.status(404).json({ message: 'User not found.' });
 
         const totalAmount = orderItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
         const paymentData = {
-          intent: "sale",
-          payer: { payment_method: "paypal" },
-          transactions: [{ amount: { total: totalAmount.toFixed(2), currency: "INR" } }],
-          redirect_urls: { return_url: "http://localhost:3000/success", cancel_url: "http://localhost:3000/cancel" },
+            intent: "sale",
+            payer: { payment_method: "paypal" },
+            transactions: [{ amount: { total: totalAmount.toFixed(2), currency: "INR" } }],
+            redirect_urls: { return_url: "http://localhost:3000/success", cancel_url: "http://localhost:3000/cancel" },
         };
 
-paypal.payment.create(paymentData,async(error,payment)=>{
-    const orderPromises = orderItems.map(async (item) => {
-        const order = new orders ({
-            user: user._id,
-            orderItems: [item], // Each order contains a single item
-            shippingAddress,
-            totalAmount,
-            paymentID:payment.id
+        paypal.payment.create(paymentData, async (error, payment) => {
+            if (error) return res.status(500).json({ message: "Payment error", error });
+
+            const orderPromises = orderItems.map(async (item) => {
+                const order = new orders({
+                    user: userData._id,
+                    orderItems: [item],
+                    shippingAddress,
+                    totalAmount,
+                    paymentID: payment.id
+                });
+                return order.save();
+            });
+
+            const placedOrders = await Promise.all(orderPromises);
+            userData.cart = []; // Empty the cart
+            await userData.save();
+
+            res.status(201).json({ message: 'Orders placed successfully.', orders: placedOrders });
         });
-        return order.save();
-    });
-    const orders = await Promise.all(orderPromises);
-})
-        // Create separate orders for each order item
-       
 
-        
-      const arr=user.cart
-      arr.splice(0,arr.length)
-
-        res.status(201).json({ message: 'Orders placed and cart cleared successfully.', orders });
     } catch (error) {
         console.error('Error placing orders:', error);
         res.status(500).json({ message: error.message });
     }
-})
+});
 
+// ✅ Get Order History
+orderRouter.get("/getorder", auth, async (req, res) => {
+    try {
+        const email = req.user;
+        if (!email) return res.status(404).json({ message: "User not found." });
 
+        const userData = await User.findOne({ email });
+        if (!userData) return res.status(404).json({ message: "User not found." });
 
-orderrouter.get("/getorder",auth,async(req,res)=>{
-    try{
-      const email=req.user
-      if(!email){
-        return res.status(404).json({message:"not found "})
-      }
-     const orderhistory=await orders.find({email})
+        const orderHistory = await orders.find({ user: userData._id });
 
-     console.log(orderhistory)
-    res.status(200).json({message:"placed successfully"})
+        res.status(200).json({ message: "Orders retrieved successfully", orders: orderHistory });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
     }
-    catch(err){
-        console.log(err)
-    }
-})
+});
 
-
-orderrouter.patch('/cancel-order/:orderId',auth,rolemiddleware(['user']), async (req, res) => {
+// ✅ Cancel Order
+orderRouter.patch('/cancel-order/:orderId', auth, roleMiddleware(['user']), async (req, res) => {
     try {
         const { orderId } = req.params;
-       
-        // Find the order by ID
         const order = await orders.findById(orderId);
-        console.log(order);
-        if (!order) {
-            return res.status(404).json({ message: 'Order not found.' });
+        if (!order) return res.status(404).json({ message: 'Order not found.' });
+
+        if (order.orderStatus === 'Delivered') {
+            return res.status(400).json({ message: 'Order is already delivered.' });
         }
 
-        // Update order status to 'cancelled'
-        if(order.orderStatus==['Delivered']){
-            res.status(404).json({ message: 'Order is already delivered'});
-        }
-
-        order.orderStatus = ['Cancelled'];
+        order.orderStatus = 'Cancelled';
         await order.save();
 
         res.status(200).json({ message: 'Order cancelled successfully.', order });
@@ -109,21 +96,17 @@ orderrouter.patch('/cancel-order/:orderId',auth,rolemiddleware(['user']), async 
     }
 });
 
-orderrouter('/verify-payment',auth,async(req,res)=>{
-    const {orderId}=req.user
+// ✅ Verify Payment
+orderRouter.get('/verify-payment', auth, async (req, res) => {
+    const { orderId } = req.user;
 
-    paypal.payment.get(orderId,async(error,payment)=>{
-        if(error){
-            res.status(500).json({message:"there is error"})
-        }
-        if(payment.state!=="approved"){
-            res.status(500).json({message:"cancel payment"})
-        }
-        await orders.findByIdAndUpdate(orderId,{orderStatus:['paid']})  
-    })
+    paypal.payment.get(orderId, async (error, payment) => {
+        if (error) return res.status(500).json({ message: "Payment verification failed." });
+        if (payment.state !== "approved") return res.status(400).json({ message: "Payment not approved." });
 
-})
+        await orders.findByIdAndUpdate(orderId, { orderStatus: 'Paid' });
+        res.status(200).json({ message: "Payment verified successfully." });
+    });
+});
 
-
-
-module.exports=orderrouter
+module.exports = orderRouter;

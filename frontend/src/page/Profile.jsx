@@ -16,7 +16,7 @@ function Profile() {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/v2/user/profile`);
+                const response = await axios.get(`http://localhost:5000/auth/profile`);
                 setDetails(response.data.user);
             } catch (error) {
                 console.error("Error fetching profile:", error);

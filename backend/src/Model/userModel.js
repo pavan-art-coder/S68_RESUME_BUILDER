@@ -14,26 +14,24 @@ const userSchema = new Schema({
         required: [true, "Please enter your password"],
         minLength: [4, "Password should be greater than 4 characters"],
       },
-      cart:[
+      cart: [
         {
-          productid:{
-            type:String,
-            unique:true,
-            required:true
+          productid: {
+            type: String,
+            required: true
           },
-          productname:{
-            type:String,
-            unique:true,
-            required:true
+          productname: {
+            type: String,
+            required: true
           },
-          quantity:{
-            type:Number,
-            min:1,
-            required:true
+          quantity: {
+            type: Number,
+            min: 1,
+            required: true
           }
-
         }
       ],
+      
       
       phoneNumber:{
         type: Number,
@@ -90,4 +88,4 @@ const userSchema = new Schema({
 
 const userModel = model('User', userSchema);
 
-model.exports = userModel;
+module.exports = userModel;

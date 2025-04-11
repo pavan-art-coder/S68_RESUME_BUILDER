@@ -4,13 +4,13 @@ import { Route, Routes } from 'react-router-dom'
 import { Login } from './Component/Login'
 import { Signup } from './Component/Signup'
 import { Home } from './page/Home'
-import Navbar from './Component/Navbar'
+import Navbar from './Component/NavBar'
 import Singlecard from './Component/Singlecard'
 import Productform from './Component/Productform'
 import Cart from './page/cart'
 import SelectAddress from './page/selectaddress'
-import OrderConfirmation from './page/Oderconfirmation'
-import PrivateRouter from './Router/PrivateRouter'
+import OrderConfirmation from './page/OrderConfirmation'
+import PrivateRouter from './Routes/PrivateRoutes'
 
 
 function App() {
@@ -30,7 +30,7 @@ function App() {
           </PrivateRouter>} />
        <Route path='/product/:id' element={<Singlecard/>}/>
        <Route path='/selectaddress' element={<SelectAddress/>}/>  
-       <Route path='/orderconfirmation' element={<OrderConfirmation/>}/>
+       <Route path='/orderConfirmation' element={<OrderConfirmation/>}/>
        <Route path='*' element={<h1>Not Found</h1>}/> 
       </Routes>
     </>
